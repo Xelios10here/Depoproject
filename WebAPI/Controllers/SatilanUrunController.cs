@@ -21,5 +21,10 @@ namespace WebAPI.Controllers
         {
             return _satilanUrunService.GetList();
         }
+        [HttpPost("update")]
+        public void SatilanUrunUpdate(SatilanUrun satilanUrun)
+        {
+            _satilanUrunService.SatilanUrunUpdate(satilanUrun);
+        }
     }
 }

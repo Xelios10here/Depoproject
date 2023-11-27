@@ -28,5 +28,10 @@ namespace WebAPI.Controllers
             var result = _categoryService.GetAll();
             return result;
         }
+        [HttpPost("update")]
+        public void CategoryUpdate(Category category)
+        {
+            _categoryService.CategoryUpdate(category);
+        }
     }
 }

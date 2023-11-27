@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,24 @@ namespace Business.Concrete
 
         public void UrunUpdate(Urun urun)
         {
-            throw new NotImplementedException();//identity de bak ***
+            using (var dbContext = new DbsistembirContext())//işlem yaparken new kullanıyor
+            {
+                // Gönderdiğimiz ürün ID'sine sahip olan ürünü veritabanından bul
+                var urunToUpdate = dbContext.Uruns.SingleOrDefault(p => p.UrunID == urun.UrunID);
+
+                if (urunToUpdate != null)
+                {
+                    // Ürün bilgilerini güncelle
+                    urunToUpdate.UrunAd = urun.UrunAd;
+                    urunToUpdate.UrunID = urun.UrunID;
+                    urunToUpdate.Stok = urun.Stok;
+
+
+
+                    // Değişiklikleri veritabanına kaydet
+                    dbContext.SaveChanges();
+                }
+            }
         }
     }
 }

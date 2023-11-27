@@ -21,5 +21,10 @@ namespace WebAPI.Controllers
         {
             return _urunService.GetList();
         }
+        [HttpPost("update")]
+        public void UrunUpdate(Urun urun)
+        {
+            _urunService.UrunUpdate(urun);
+        }
     }
 }

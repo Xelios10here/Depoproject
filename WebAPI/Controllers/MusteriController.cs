@@ -28,6 +28,11 @@ namespace WebAPI.Controllers
 
             return _musteriService.GetList();
         }
+        [HttpPost("update")]
+        public void MusteriUpdate(Musteri musteri)
+        {
+            _musteriService.MusteriUpdate(musteri);
+        }
 
 
     }

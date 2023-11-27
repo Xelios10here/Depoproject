@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,10 @@ namespace Business.Concrete
         }
 
 
-        public void CategoryAdd(Category category)
+        public Category CategoryGetByID(int CategoryID)
         {
-             _categoryDal.Add(category);
+            return _categoryDal.Get(p => p.CategoryID == CategoryID);
+
 
         }
 
@@ -31,7 +33,22 @@ namespace Business.Concrete
 
         public void CategoryUpdate(Category category)
         {
-            _categoryDal.Update(category);
+            using (var dbContext = new DbsistembirContext())
+            {
+                // Gönderdiğimiz ürün ID'sine sahip olan ürünü veritabanından bul
+                var categoryToUpdate = dbContext.Categories.SingleOrDefault(p => p.CategoryID == category.CategoryID);
+
+                if (categoryToUpdate != null)
+                {
+                    // Ürün bilgilerini güncelle
+                    categoryToUpdate.CategoryAd = category.CategoryAd;
+                    categoryToUpdate.CategoryID = category.CategoryID;
+
+
+                    // Değişiklikleri veritabanına kaydet
+                    dbContext.SaveChanges();
+                }
+            }
         }
 
         public Category GetByID(int id)
@@ -42,6 +59,11 @@ namespace Business.Concrete
         public List<Category> GetAll()
         {
             return _categoryDal.GetAll();
+        }
+
+        public void CategoryAdd(Category category)
+        {
+            _categoryDal.Add(category);
         }
     }
 }
